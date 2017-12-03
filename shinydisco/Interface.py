@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+import os
 
 
 class Interface:
@@ -11,7 +12,8 @@ class Interface:
         self.read(filename)
 
     def read(self, filename):
-        with open(filename, 'r') as csvfile:
+        filepath = os.path.join(os.getcwd(), filename)
+        with open(filepath, 'r') as csvfile:
             self.data = csv.reader(csvfile)
 
     def write(self, data):
