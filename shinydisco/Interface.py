@@ -11,7 +11,8 @@ class Interface:
         self.read(filename)
 
     def read(self, filename):
-        csv.reader(filename)
+        with open(filename, 'r') as csvfile:
+            self.data = csv.reader(csvfile)
 
     def write(self, data):
         self.data = True

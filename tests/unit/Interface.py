@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
 import csv
+import os
 
 from pytest import fixture
 
 from shinydisco.Interface import Interface
+
+
+@fixture
+def csv_teardown(request):
+    def teardown():
+        os.remove('mycsv.csv')
+    request.addfinalizer(teardown)
+
+
+@fixture
+def csvfile(csv_teardown):
+    with open('mycsv.csv', 'w') as csvfile:
+        csvfile.close()
 
 
 @fixture
@@ -16,11 +30,12 @@ def test_interface(interface):
     Interface.read.assert_called_with('mycsv.csv')
 
 
-def test_interface_read(mocker):
+def test_interface_read(mocker, csvfile):
     mocker.patch.object(csv, 'reader')
-    interface = Interface('mycsv.csv')
+    mocker.patch.object(Interface, '__init__', return_value=None)
+    interface = Interface()
     interface.read('mycsv.csv')
-    csv.reader.assert_called_with('mycsv.csv')
+    assert interface.data == csv.reader()
 
 
 def test_interface_write(interface):
