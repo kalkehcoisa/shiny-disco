@@ -7,10 +7,11 @@ class Vlans:
         self.primary_vlans = primaries
         self.secondary_vlans = secondaries
 
-    def assign(self, *, redundant=False):
+    def book(self, *, redundant=False):
         """
-        Picks the first free vlan available, removing it from available ones.
-        In case of redudancy, secondary vlans are also used.
+        Books a vlan, removing it from the available ones.
+        In case of redudancy, a secondary vlan and the matching primary vlan
+        will be removed.
         """
         if redundant:
             secondary = self.secondary_vlans.pop(0)
