@@ -12,7 +12,8 @@ class Vlans:
         Picks the first free vlan available, removing it from available ones.
         In case of redudancy, secondary vlans are also used.
         """
-        primary = self.primary_vlans.pop(0)
         if redundant:
-            self.secondary_vlans.pop(0)
-        return primary
+            secondary = self.secondary_vlans.pop(0)
+            self.primary_vlans.remove(secondary)
+            return secondary
+        return self.primary_vlans.pop(0)
