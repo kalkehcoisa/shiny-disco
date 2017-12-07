@@ -6,3 +6,6 @@ class Requests:
 
     def __init__(self, path):
         self.interface = Interface(path)
+
+    def get(self):
+        return self.interface.data
