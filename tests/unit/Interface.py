@@ -31,10 +31,10 @@ def test_interface(interface):
 
 def test_interface_read(mocker, interface, csvfile):
     mocker.patch('os.path.join')
-    mocker.patch('csv.reader')
+    mocker.patch('csv.DictReader')
     interface.read()
     os.path.join.assert_called_with(os.getcwd(), 'mycsv.csv')
-    assert interface.data == csv.reader()
+    assert interface.data == csv.DictReader()
 
 
 def test_interface_write(interface):

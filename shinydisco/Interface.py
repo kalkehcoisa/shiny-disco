@@ -14,7 +14,7 @@ class Interface:
     def read(self):
         filepath = os.path.join(os.getcwd(), self.filename)
         with open(filepath, 'r') as csvfile:
-            self.data = csv.reader(csvfile)
+            self.data = csv.DictReader(csvfile)
 
     def write(self, data):
         self.data = True
