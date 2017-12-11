@@ -22,20 +22,17 @@ def csvfile(csv_teardown):
 
 @fixture
 def interface(mocker):
-    mocker.patch.object(Interface, 'read')
     return Interface('mycsv.csv')
 
 
 def test_interface(interface):
-    Interface.read.assert_called_with('mycsv.csv')
+    interface.filename == 'mycsv.csv'
 
 
-def test_interface_read(mocker, csvfile):
+def test_interface_read(mocker, interface, csvfile):
     mocker.patch('os.path.join')
     mocker.patch('csv.reader')
-    mocker.patch.object(Interface, '__init__', return_value=None)
-    interface = Interface()
-    interface.read('mycsv.csv')
+    interface.read()
     os.path.join.assert_called_with(os.getcwd(), 'mycsv.csv')
     assert interface.data == csv.reader()
 

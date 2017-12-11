@@ -9,10 +9,10 @@ class Interface:
     """
 
     def __init__(self, filename):
-        self.read(filename)
+        self.filename = filename
 
-    def read(self, filename):
-        filepath = os.path.join(os.getcwd(), filename)
+    def read(self):
+        filepath = os.path.join(os.getcwd(), self.filename)
         with open(filepath, 'r') as csvfile:
             self.data = csv.reader(csvfile)
 
