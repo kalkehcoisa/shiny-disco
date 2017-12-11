@@ -30,19 +30,26 @@ def test_interface(interface):
     interface.filename == 'mycsv.csv'
 
 
-def test_interface_read(mocker, interface, csvfile):
+def test_interface_path(mocker, interface):
     mocker.patch('os.path.join')
-    mocker.patch('csv.DictReader')
+    result = interface.path()
+    os.path.join.assert_called_with(os.getcwd(), interface.filename)
+    assert result == os.path.join()
+
+
+def test_interface_read(mocker, interface, csvfile):
+    mocker.patch.object(Interface, 'path')
+    mocker.patch.object(csv, 'DictReader')
     interface.read()
-    os.path.join.assert_called_with(os.getcwd(), 'mycsv.csv')
+    assert interface.path.call_count == 1
     assert interface.data == csv.DictReader()
 
 
 def test_interface_write(mocker, interface, csvfile):
-    mocker.patch('os.path.join')
+    mocker.patch.object(Interface, 'path')
     mocker.patch.object(csv, 'DictWriter')
     interface.write(['headers'], [{}])
-    os.path.join.assert_called_with(os.getcwd(), 'mycsv.csv')
     csv.DictWriter.assert_called_with(ANY, fieldnames=['headers'])
     csv.DictWriter().writerow.assert_called_with({})
+    assert interface.path.call_count == 1
     assert csv.DictWriter().writeheader.call_count == 1

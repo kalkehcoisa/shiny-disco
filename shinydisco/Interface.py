@@ -11,14 +11,15 @@ class Interface:
     def __init__(self, filename):
         self.filename = filename
 
+    def path(self):
+        return os.path.join(os.getcwd(), self.filename)
+
     def read(self):
-        filepath = os.path.join(os.getcwd(), self.filename)
-        with open(filepath, 'r') as csvfile:
+        with open(self.path(), 'r') as csvfile:
             self.data = csv.DictReader(csvfile)
 
     def write(self, headers, data):
-        filepath = os.path.join(os.getcwd(), self.filename)
-        with open(filepath, 'w') as csvfile:
+        with open(self.path(), 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=headers)
             writer.writeheader(headers)
             for item in data:
