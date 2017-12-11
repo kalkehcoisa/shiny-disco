@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import csv
 import os
+from unittest.mock import ANY
 
 from pytest import fixture
 
@@ -37,6 +38,11 @@ def test_interface_read(mocker, interface, csvfile):
     assert interface.data == csv.DictReader()
 
 
-def test_interface_write(interface):
-    interface.write({})
-    assert interface.data
+def test_interface_write(mocker, interface, csvfile):
+    mocker.patch('os.path.join')
+    mocker.patch.object(csv, 'DictWriter')
+    interface.write(['headers'], [{}])
+    os.path.join.assert_called_with(os.getcwd(), 'mycsv.csv')
+    csv.DictWriter.assert_called_with(ANY, fieldnames=['headers'])
+    csv.DictWriter().writerow.assert_called_with({})
+    assert csv.DictWriter().writeheader.call_count == 1

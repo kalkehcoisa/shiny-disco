@@ -16,5 +16,10 @@ class Interface:
         with open(filepath, 'r') as csvfile:
             self.data = csv.DictReader(csvfile)
 
-    def write(self, data):
-        self.data = True
+    def write(self, headers, data):
+        filepath = os.path.join(os.getcwd(), self.filename)
+        with open(filepath, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer.writeheader(headers)
+            for item in data:
+                writer.writerow(item)
