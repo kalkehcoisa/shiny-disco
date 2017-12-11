@@ -14,6 +14,7 @@ def vlan():
 def request():
     return {'request_id': 1, 'redundant': '0'}
 
+
 @fixture
 def output(mocker):
     return Output('output_file')
