@@ -9,25 +9,18 @@ from shinydisco.Interface import Interface
 
 
 @fixture
-def csv_teardown(request):
-    def teardown():
-        os.remove('mycsv.csv')
-    request.addfinalizer(teardown)
-
-
-@fixture
 def csvfile(csv_teardown):
-    with open('mycsv.csv', 'w') as csvfile:
+    with open('testcsv.csv', 'w') as csvfile:
         csvfile.close()
 
 
 @fixture
 def interface(mocker):
-    return Interface('mycsv.csv')
+    return Interface('testcsv.csv')
 
 
 def test_interface(interface):
-    interface.filename == 'mycsv.csv'
+    interface.filename == 'testcsv.csv'
 
 
 def test_interface_path(mocker, interface):

@@ -16,7 +16,7 @@ class Interface:
 
     def read(self):
         with open(self.path(), 'r') as csvfile:
-            self.data = csv.DictReader(csvfile)
+            self.data = csv.DictReader(csvfile.readlines())
 
     def write(self, headers, data):
         with open(self.path(), 'w') as csvfile:
