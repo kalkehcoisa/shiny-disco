@@ -16,8 +16,7 @@ def request():
 
 @fixture
 def output(mocker):
-    mocker.patch.object(Interface, 'read')
-    return  Output('output_file')
+    return Output('output_file')
 
 
 def test_output_init(output):
@@ -44,3 +43,11 @@ def test_output_add_redundant(output, vlan, request):
          'vlan_id': '0'}
     ]
     assert output.data == expected
+
+
+def test_output_save(mocker, output):
+    mocker.patch.object(Interface, 'read')
+    mocker.patch.object(Interface, 'write')
+    output.save()
+    Interface.read.assert_called_with(output.output_file)
+    Interface.write.assert_called_with(output.data)

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from .Interface import Interface
+
+
 class Output:
 
     def __init__(self, output_file):
@@ -16,3 +19,7 @@ class Output:
             self.data.append(dict(item))
             self.data[-1]['primary_port'] = '0'
         self.data.append(item)
+
+    def save(self):
+        interface = Interface(self.output_file)
+        interface.write(self.data)
