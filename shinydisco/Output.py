@@ -3,12 +3,19 @@ from .Interface import Interface
 
 
 class Output:
+    """
+    Outputs processed requests to a csv file, using Interface.
+    """
 
     def __init__(self, output_file):
         self.output_file = output_file
         self.data = []
 
     def write(self, vlan, request):
+        """
+        Logs processed requests. If the request is redundant, two items
+        will be logged.
+        """
         item = {
             'request_id': request['request_id'],
             'device_id': vlan['device_id'],
@@ -21,5 +28,8 @@ class Output:
         self.data.append(item)
 
     def save(self):
+        """
+        Saves the output, performing the actual write.
+        """
         interface = Interface(self.output_file)
         interface.write(self.data)
