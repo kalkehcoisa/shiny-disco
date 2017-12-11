@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from .Interface import Interface
 
 
 class Vlans:
@@ -6,6 +7,25 @@ class Vlans:
     def __init__(self, primaries, secondaries):
         self.primary_vlans = primaries
         self.secondary_vlans = secondaries
+        self.interface = Interface('a')
+
+    @staticmethod
+    def _order(vlan):
+        return (int(vlan['vlan_id']), int(vlan['device_id']))
+
+    @staticmethod
+    def _filter(port):
+        return lambda vlan: vlan['primary_port'] == port
+
+    def prepare(self):
+        """
+        Prepares vlans, so that they are arranged by booking order. This means
+        they will be ordered by vlan and device id, with primary ports
+        separated from secondary ones.
+        """
+        data = sorted(self.interface.data, key=Vlans._order)
+        self.primary_vlans = [i for i in filter(Vlans._filter('1'), data)]
+        self.secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
 
     def book(self, *, redundant=False):
         """
