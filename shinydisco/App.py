@@ -15,6 +15,7 @@ class App:
         requests = Requests(requests_file)
         output = Output(output_file)
 
+        vlans.prepare()
         for request in requests.get():
             vlan = vlans.book(redundant=request['redundant'])
             output.write(vlan, request)

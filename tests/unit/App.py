@@ -12,8 +12,10 @@ def test_app_run(mocker):
     mocker.patch.object(Output, 'save')
     mocker.patch.object(Requests, 'get', return_value=[{'redundant': '0'}])
     mocker.patch.object(Vlans, 'book')
+    mocker.patch.object(Vlans, 'prepare')
     App.run('vlans.csv', 'requests.csv', 'output.csv')
     Vlans.book.assert_called_with(redundant='0')
     Output.write.assert_called_with(Vlans.book(), {'redundant': '0'})
+    assert Vlans.prepare.call_count == 1
     assert Requests.get.call_count == 1
     assert Output.save.call_count == 1
