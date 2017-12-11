@@ -6,6 +6,7 @@ class Vlans:
 
     def __init__(self, vlans_file):
         self.interface = Interface(vlans_file)
+        self.interface.read()
 
     @staticmethod
     def _order(vlan):

@@ -31,7 +31,8 @@ def prepared_vlans(vlans, data):
     return vlans
 
 
-def test_vlans_init(vlans):
+def test_vlans(vlans):
+    assert Interface.read.call_count == 1
     assert isinstance(vlans.interface, Interface)
 
 
