@@ -10,8 +10,9 @@ class Cli:
     @click.command()
     @click.argument('vlans')
     @click.argument('requests')
-    def run(vlans, requests):
+    @click.argument('output')
+    def run(vlans, requests, output):
         """
         Runs the app, passing vlans and requests filenames from the cli.
         """
-        App.run(vlans, requests)
+        App.run(vlans, requests, output)
