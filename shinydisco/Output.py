@@ -8,7 +8,7 @@ class Output:
     """
 
     def __init__(self, output_file):
-        self.output_file = output_file
+        self.interface = Interface(output_file)
         self.data = []
 
     def write(self, vlan, request):
@@ -31,5 +31,4 @@ class Output:
         """
         Saves the output, performing the actual write.
         """
-        interface = Interface(self.output_file)
-        interface.write(self.data)
+        self.interface.write(self.data)

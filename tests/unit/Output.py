@@ -20,9 +20,9 @@ def output(mocker):
     return Output('output_file')
 
 
-def test_output_init(output):
-    assert output.output_file == 'output_file'
+def test_output(output):
     assert output.data == []
+    assert isinstance(output.interface, Interface)
 
 
 def test_output_add(output, vlan, request):
