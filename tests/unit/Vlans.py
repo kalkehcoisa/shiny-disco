@@ -21,12 +21,17 @@ def data():
 def vlans(mocker, data):
     mocker.patch.object(Interface, 'read')
     Interface.data = data
-    return Vlans(['primary'], ['secondary'])
+    return Vlans('filename')
+
+
+@fixture
+def prepared_vlans(vlans, data):
+    vlans.primary_vlans = [data[0], data[2], data[1], data[3]]
+    vlans.secondary_vlans = [data[5], data[4]]
+    return vlans
 
 
 def test_vlans_init(vlans):
-    assert vlans.primary_vlans == ['primary']
-    assert vlans.secondary_vlans == ['secondary']
     assert isinstance(vlans.interface, Interface)
 
 
@@ -40,27 +45,14 @@ def test_vlans_prepare_secondaries(vlans, data):
     assert vlans.secondary_vlans == [data[5], data[4]]
 
 
-def test_vlans_assign(vlans):
-    vlans = Vlans([{'id': 0, 'device': 0}], [])
-    vlan = vlans.book()
-    assert vlan == {'id': 0, 'device': 0}
-    assert vlans.primary_vlans == []
+def test_vlans_assign(prepared_vlans, data):
+    vlan = prepared_vlans.book()
+    assert vlan == data[0]
+    assert prepared_vlans.primary_vlans == [data[2], data[1], data[3]]
 
 
-def test_vlans_assign_redundant(vlans):
-    vlans = Vlans([{'id': 0, 'device': 0}], [{'id': 0, 'device': 0}])
-    vlan = vlans.book(redundant=True)
-    assert vlan == {'id': 0, 'device': 0}
-    assert vlans.primary_vlans == []
-    assert vlans.secondary_vlans == []
-
-
-def test_vlans_assign_redundant_not_first(vlans):
-    vlans = Vlans(
-        [{'id': 0, 'device': 0}, {'id': 1, 'device': 0}],
-        [{'id': 1, 'device': 0}]
-    )
-    vlan = vlans.book(redundant=True)
-    assert vlan == {'id': 1, 'device': 0}
-    assert vlans.primary_vlans == [{'id': 0, 'device': 0}]
-    assert vlans.secondary_vlans == []
+def test_vlans_assign_redundant(prepared_vlans, data):
+    vlan = prepared_vlans.book(redundant=True)
+    assert vlan == data[2]
+    assert prepared_vlans.primary_vlans == [data[0], data[1], data[3]]
+    assert prepared_vlans.secondary_vlans == [data[4]]

@@ -4,10 +4,8 @@ from .Interface import Interface
 
 class Vlans:
 
-    def __init__(self, primaries, secondaries):
-        self.primary_vlans = primaries
-        self.secondary_vlans = secondaries
-        self.interface = Interface('a')
+    def __init__(self, vlans_file):
+        self.interface = Interface(vlans_file)
 
     @staticmethod
     def _order(vlan):
@@ -35,6 +33,7 @@ class Vlans:
         """
         if redundant:
             secondary = self.secondary_vlans.pop(0)
+            secondary['primary_port'] = '1'
             self.primary_vlans.remove(secondary)
             return secondary
         return self.primary_vlans.pop(0)
