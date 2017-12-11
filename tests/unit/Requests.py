@@ -14,6 +14,7 @@ def requests(mocker):
 
 
 def test_requests_init(requests):
+    assert Interface.read.call_count == 1
     assert isinstance(requests.interface, Interface)
 
 
