@@ -18,5 +18,5 @@ def runner(app):
 
 
 def test_cli_run(runner):
-    runner.invoke(Cli.run, ['vlans.csv', 'requests.csv', 'output.csv'])
+    runner.invoke(Cli.main, ['vlans.csv', 'requests.csv', 'output.csv'])
     App.run.assert_called_with('vlans.csv', 'requests.csv', 'output.csv')
