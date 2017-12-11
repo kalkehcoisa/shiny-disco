@@ -31,4 +31,5 @@ class Output:
         """
         Saves the output, performing the actual write.
         """
-        self.interface.write(self.data)
+        headers = ['request_id', 'device_id', 'primary_port', 'vlan_id']
+        self.interface.write(headers, self.data)

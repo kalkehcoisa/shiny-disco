@@ -49,4 +49,5 @@ def test_output_add_redundant(output, vlan, request):
 def test_output_save(mocker, output):
     mocker.patch.object(Interface, 'write')
     output.save()
-    Interface.write.assert_called_with(output.data)
+    headers = ['request_id', 'device_id', 'primary_port', 'vlan_id']
+    Interface.write.assert_called_with(headers, output.data)
