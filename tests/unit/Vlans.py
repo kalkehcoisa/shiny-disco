@@ -46,13 +46,13 @@ def test_vlans_prepare_secondaries(vlans, data):
     assert vlans.secondary_vlans == [data[5], data[4]]
 
 
-def test_vlans_assign(prepared_vlans, data):
+def test_vlans_book(prepared_vlans, data):
     vlan = prepared_vlans.book()
     assert vlan == data[0]
     assert prepared_vlans.primary_vlans == [data[2], data[1], data[3]]
 
 
-def test_vlans_assign_redundant(prepared_vlans, data):
+def test_vlans_book_redundant(prepared_vlans, data):
     vlan = prepared_vlans.book(redundant=True)
     assert vlan == data[2]
     assert prepared_vlans.primary_vlans == [data[0], data[1], data[3]]
