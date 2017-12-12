@@ -44,5 +44,5 @@ def test_interface_write(mocker, interface, csvfile):
     interface.write(['headers'], [{}])
     csv.DictWriter.assert_called_with(ANY, fieldnames=['headers'])
     csv.DictWriter().writerow.assert_called_with({})
+    csv.DictWriter().writeheader.assert_called_with()
     assert interface.path.call_count == 1
-    assert csv.DictWriter().writeheader.call_count == 1

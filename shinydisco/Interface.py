@@ -21,6 +21,6 @@ class Interface:
     def write(self, headers, data):
         with open(self.path(), 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=headers)
-            writer.writeheader(headers)
+            writer.writeheader()
             for item in data:
                 writer.writerow(item)
