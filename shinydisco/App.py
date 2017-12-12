@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from .Logger import Logger
 from .Output import Output
 from .Requests import Requests
 from .Vlans import Vlans
@@ -11,7 +12,9 @@ class App:
 
     @staticmethod
     def run(vlans_file, requests_file, output_file):
-        vlans = Vlans(vlans_file)
+        logger = Logger(verbosity=0)
+        logger.log('run-verbosity', 0)
+        vlans = Vlans(vlans_file, logger)
         requests = Requests(requests_file)
         output = Output(output_file)
 
