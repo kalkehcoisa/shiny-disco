@@ -53,13 +53,13 @@ def test_vlans_prepare_secondaries_cleaned(vlans, data):
 
 
 def test_vlans_book(prepared_vlans, data):
-    vlan = prepared_vlans.book()
+    vlan = prepared_vlans.book(redundant='0')
     assert vlan == data[0]
     assert prepared_vlans.primary_vlans == [data[2], data[1], data[3]]
 
 
 def test_vlans_book_redundant(prepared_vlans, data):
-    vlan = prepared_vlans.book(redundant=True)
+    vlan = prepared_vlans.book(redundant='1')
     assert vlan == data[2]
     assert prepared_vlans.primary_vlans == [data[0], data[1], data[3]]
     assert prepared_vlans.secondary_vlans == [data[4]]

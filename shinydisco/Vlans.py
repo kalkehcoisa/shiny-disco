@@ -40,7 +40,7 @@ class Vlans:
         In case of redudancy, a secondary vlan and the matching primary vlan
         will be removed.
         """
-        if redundant:
+        if redundant == '1':
             secondary = self.secondary_vlans.pop(0)
             secondary['primary_port'] = '1'
             self.primary_vlans.remove(secondary)
