@@ -4,7 +4,8 @@ from .Interface import Interface
 
 class Vlans:
 
-    def __init__(self, vlans_file):
+    def __init__(self, vlans_file, logger):
+        self.logger = logger
         self.interface = Interface(vlans_file)
         self.interface.read()
 
@@ -40,9 +41,14 @@ class Vlans:
         In case of redudancy, a secondary vlan and the matching primary vlan
         will be removed.
         """
+        vlan = None
         if redundant == '1':
-            secondary = self.secondary_vlans.pop(0)
-            secondary['primary_port'] = '1'
-            self.primary_vlans.remove(secondary)
-            return secondary
-        return self.primary_vlans.pop(0)
+            vlan = self.secondary_vlans.pop(0)
+            vlan['primary_port'] = '1'
+            self.primary_vlans.remove(vlan)
+
+        if vlan is None:
+            vlan = self.primary_vlans.pop(0)
+        args = [vlan['vlan_id'], vlan['device_id'], redundant]
+        self.logger.log('book-vlan', *args)
+        return vlan

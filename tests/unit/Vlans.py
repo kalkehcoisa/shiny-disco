@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pytest import fixture
+from pytest import fixture, mark
 
 from shinydisco.Interface import Interface
 from shinydisco.Vlans import Vlans
@@ -18,10 +18,10 @@ def data():
 
 
 @fixture
-def vlans(mocker, data):
+def vlans(mocker, data, logger):
     mocker.patch.object(Interface, 'read')
     Interface.data = data
-    return Vlans('filename')
+    return Vlans('filename', logger)
 
 
 @fixture
@@ -31,8 +31,9 @@ def prepared_vlans(vlans, data):
     return vlans
 
 
-def test_vlans(vlans):
+def test_vlans(vlans, logger):
     assert Interface.read.call_count == 1
+    assert vlans.logger == logger
     assert isinstance(vlans.interface, Interface)
 
 
@@ -63,3 +64,11 @@ def test_vlans_book_redundant(prepared_vlans, data):
     assert vlan == data[2]
     assert prepared_vlans.primary_vlans == [data[0], data[1], data[3]]
     assert prepared_vlans.secondary_vlans == [data[4]]
+
+
+@mark.parametrize('redundant, index', [('0', 0), ('1', 2)])
+def test_vlans_book_log(prepared_vlans, data, logger, redundant, index):
+    prepared_vlans.book(redundant=redundant)
+    vlan = data[index]
+    args = [vlan['vlan_id'], vlan['device_id'], redundant]
+    logger.log.assert_called_with('book-vlan', *args)
