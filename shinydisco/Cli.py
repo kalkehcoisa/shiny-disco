@@ -11,7 +11,8 @@ class Cli:
     @click.argument('vlans', required=False)
     @click.argument('requests', required=False)
     @click.argument('output', required=False)
-    def main(vlans, requests, output):
+    @click.option('--verbose', '-v', count=True)
+    def main(vlans, requests, output, verbose):
         """
         Runs the app, passing vlans and requests filenames from the cli.
         """
@@ -22,4 +23,6 @@ class Cli:
             kwargs['requests_file'] = requests
         if output:
             kwargs['output_file'] = output
+        if verbose:
+            kwargs['verbosity'] = verbose
         App.run(**kwargs)

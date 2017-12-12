@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from click.testing import CliRunner
 
-from pytest import fixture
+from pytest import fixture, mark
 
 from shinydisco.App import App
 from shinydisco.Cli import Cli
@@ -17,7 +17,6 @@ def runner(app):
     return CliRunner()
 
 
-
 def test_cli_run(runner):
     runner.invoke(Cli.main, [])
     App.run.assert_called_with()
@@ -31,3 +30,9 @@ def test_cli_run_optionals(runner):
         'output_file': 'output.csv'
     }
     App.run.assert_called_with(**kwargs)
+
+
+@mark.parametrize('verbosity', ['-v', '--verbose'])
+def test_cli_run_verbose(app, runner, verbosity):
+    runner.invoke(Cli.main, [verbosity])
+    App.run.assert_called_with(verbosity=1)
