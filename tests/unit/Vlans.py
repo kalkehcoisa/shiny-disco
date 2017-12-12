@@ -9,11 +9,11 @@ from shinydisco.Vlans import Vlans
 def data():
     return [
         {'device_id': '0', 'primary_port': '1', 'vlan_id': '0'},
-        {'device_id': '0', 'primary_port': '1', 'vlan_id': '1'},
-        {'device_id': '1', 'primary_port': '1', 'vlan_id': '0'},
-        {'device_id': '1', 'primary_port': '1', 'vlan_id': '1'},
-        {'device_id': '0', 'primary_port': '0', 'vlan_id': '1'},
-        {'device_id': '1', 'primary_port': '0', 'vlan_id': '0'}
+        {'device_id': '0', 'primary_port': '1', 'vlan_id': '2'},
+        {'device_id': '5', 'primary_port': '1', 'vlan_id': '1'},
+        {'device_id': '5', 'primary_port': '1', 'vlan_id': '3'},
+        {'device_id': '0', 'primary_port': '0', 'vlan_id': '2'},
+        {'device_id': '5', 'primary_port': '0', 'vlan_id': '1'}
     ]
 
 
@@ -44,6 +44,12 @@ def test_vlans_prepare(vlans, data):
 def test_vlans_prepare_secondaries(vlans, data):
     vlans.prepare()
     assert vlans.secondary_vlans == [data[5], data[4]]
+
+
+def test_vlans_prepare_secondaries_cleaned(vlans, data):
+    Interface.data = [data[0], data[1], data[3], data[4], data[5]]
+    vlans.prepare()
+    assert vlans.secondary_vlans == [data[4]]
 
 
 def test_vlans_book(prepared_vlans, data):

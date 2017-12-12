@@ -21,10 +21,18 @@ class Vlans:
         Prepares vlans, so that they are arranged by booking order. This means
         they will be ordered by vlan and device id, with primary ports
         separated from secondary ones.
+
+        This will also remove orphan secondary ports.
         """
         data = sorted(self.interface.data, key=Vlans._order)
         self.primary_vlans = [i for i in filter(Vlans._filter('1'), data)]
-        self.secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
+        secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
+        self.secondary_vlans = []
+        for item in secondary_vlans:
+            vlan = dict(item)
+            vlan['primary_port'] = '1'
+            if vlan in self.primary_vlans:
+                self.secondary_vlans.append(item)
 
     def book(self, *, redundant=False):
         """
