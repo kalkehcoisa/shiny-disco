@@ -11,7 +11,8 @@ class App:
     """
 
     @staticmethod
-    def run(vlans_file, requests_file, output_file):
+    def run(vlans_file='vlans.csv', requests_file='requests.csv',
+            output_file='output.csv'):
         logger = Logger(verbosity=0)
         logger.log('run-verbosity', 0)
         vlans = Vlans(vlans_file, logger)

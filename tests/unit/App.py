@@ -21,7 +21,7 @@ def app(mocker):
 
 
 def test_app_run(app):
-    app.run('vlans.csv', 'requests.csv', 'output.csv')
+    app.run()
     Vlans.book.assert_called_with(redundant='0')
     Output.write.assert_called_with(Vlans.book(), {'redundant': '0'})
     assert Vlans.prepare.call_count == 1
@@ -29,7 +29,11 @@ def test_app_run(app):
     assert Output.save.call_count == 1
 
 
+def test_app_run_optionals(app):
+    app.run(vlans_file='vlans', requests_file='requests', output_file='output')
+
+
 def test_app_run_log(mocker, app):
     mocker.patch.object(Logger, 'log')
-    App.run('vlans.csv', 'requests.csv', 'output.csv')
+    app.run()
     Logger.log.assert_called_with('run-verbosity', 0)
