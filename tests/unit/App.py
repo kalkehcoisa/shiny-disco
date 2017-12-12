@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pytest import fixture
+from pytest import fixture, mark
 
 from shinydisco.App import App
 from shinydisco.Interface import Interface
@@ -37,3 +37,10 @@ def test_app_run_log(mocker, app):
     mocker.patch.object(Logger, 'log')
     app.run()
     Logger.log.assert_called_with('run-verbosity', 0)
+
+
+@mark.parametrize('verbosity', [0, 1])
+def test_app_run_log_verbosity(mocker, app, verbosity):
+    mocker.patch.object(Logger, 'log')
+    app.run(verbosity=verbosity)
+    Logger.log.assert_called_with('run-verbosity', verbosity)
