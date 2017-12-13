@@ -31,6 +31,16 @@ class Vlans:
         self.primary_vlans = sorted(primary_vlans, key=Vlans._order)
         self.secondary_vlans = sorted(secondary_vlans, key=Vlans._order)
 
+    def _get_secondary(self):
+        i = 0
+        secondaries = len(self.secondary_vlans)
+        while i < secondaries:
+            vlan = self.secondary_vlans.pop(0)
+            vlan['primary_port'] = '1'
+            if vlan in self.primary_vlans:
+                return vlan
+            i += 1
+
     def book(self, *, redundant=False):
         """
         Books a vlan, removing it from the available ones.
@@ -39,10 +49,8 @@ class Vlans:
         """
         vlan = None
         if redundant == '1':
-            vlan = self.secondary_vlans.pop(0)
-            vlan['primary_port'] = '1'
+            vlan = self._get_secondary()
             self.primary_vlans.remove(vlan)
-
         if vlan is None:
             vlan = self.primary_vlans.pop(0)
         args = [vlan['vlan_id'], vlan['device_id'], redundant]
