@@ -20,3 +20,14 @@ For redundant requests:
 - Two VLANs will be reserved, one from a primary port and one from a secondary port.
 - The ports will be on the same device and the VLAN ids will be the same on both ports.
 - In case of a tie, the device with the lowest id will be chosen
+
+Usage
+#####
+
+Install with::
+
+    python setup.py install
+
+Running::
+
+    shinydisco [vlans.csv, requests.csv, output.csv] [-v]
