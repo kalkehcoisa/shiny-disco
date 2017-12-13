@@ -3,6 +3,9 @@ import logging
 
 
 class Logger:
+    """
+    Wraps the standard logger to make it more accessible from other classes.
+    """
 
     verbosities = ['critical', 'error', 'warning', 'info', 'debug']
     events = {
