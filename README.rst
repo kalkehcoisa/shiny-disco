@@ -31,3 +31,7 @@ Install with::
 Running::
 
     shinydisco [vlans.csv, requests.csv, output.csv] [-v]
+
+Testing::
+
+    pytest -p no:logging
