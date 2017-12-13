@@ -25,9 +25,11 @@ class Vlans:
 
         This will also remove orphan secondary ports.
         """
-        data = sorted(self.interface.data, key=Vlans._order)
-        self.primary_vlans = [i for i in filter(Vlans._filter('1'), data)]
-        self.secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
+        data = list(self.interface.data)
+        primary_vlans = [i for i in filter(Vlans._filter('1'), data)]
+        secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
+        self.primary_vlans = sorted(primary_vlans, key=Vlans._order)
+        self.secondary_vlans = sorted(secondary_vlans, key=Vlans._order)
 
     def book(self, *, redundant=False):
         """
