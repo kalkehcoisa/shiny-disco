@@ -3,6 +3,9 @@ from .Interface import Interface
 
 
 class Vlans:
+    """
+    Model for vlans
+    """
 
     def __init__(self, vlans_file, logger):
         self.logger = logger
