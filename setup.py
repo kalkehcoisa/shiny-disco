@@ -12,7 +12,7 @@ setup(
     long_description=readme,
     author='Jacopo Cascioli',
     author_email='jacopocascioli@gmail.com',
-    version='0.0.1',
+    version='0.1.0',
     packages=find_packages(),
     tests_require=[
         'pytest>=3.3.0',
