@@ -5,6 +5,10 @@ from .App import App
 
 
 class Cli:
+    """
+    Manages the command line, taking commands and executing the corresponding
+    funcionality.
+    """
 
     @staticmethod
     @click.command()
