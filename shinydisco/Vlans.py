@@ -27,13 +27,7 @@ class Vlans:
         """
         data = sorted(self.interface.data, key=Vlans._order)
         self.primary_vlans = [i for i in filter(Vlans._filter('1'), data)]
-        secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
-        self.secondary_vlans = []
-        for item in secondary_vlans:
-            vlan = dict(item)
-            vlan['primary_port'] = '1'
-            if vlan in self.primary_vlans:
-                self.secondary_vlans.append(item)
+        self.secondary_vlans = [i for i in filter(Vlans._filter('0'), data)]
 
     def book(self, *, redundant=False):
         """

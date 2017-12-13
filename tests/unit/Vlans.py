@@ -47,12 +47,6 @@ def test_vlans_prepare_secondaries(vlans, data):
     assert vlans.secondary_vlans == [data[5], data[4]]
 
 
-def test_vlans_prepare_secondaries_cleaned(vlans, data):
-    Interface.data = [data[0], data[1], data[3], data[4], data[5]]
-    vlans.prepare()
-    assert vlans.secondary_vlans == [data[4]]
-
-
 def test_vlans_book(prepared_vlans, data):
     vlan = prepared_vlans.book(redundant='0')
     assert vlan == data[0]
